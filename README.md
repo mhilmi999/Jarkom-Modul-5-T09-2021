@@ -183,6 +183,8 @@ Pertama kami mengunduh terlebih dahulu `bind9` agar dapat melakukan hal tersebut
 Pertama-tama kami mendefinisikan `resolv.conf` mengarah ke IP Private laptop agar tersambung ke internet, selanjutnya kami melakukan instalasi package `DHCP Relay` berupa `isc-dhcp-relay`, setelah sudah maka kami juga lakukan ip forwarding pada file `sysctl.conf` dan aktifkan nya, dan selanjutnya pada file `isc-dhcp-relay` kami mendefiniskan `DHCP Server` nya ada pada **Jipangu*** serta interfaces yang akan dilewatinya yaitu `eth0 eth1 eth2 eth3`. Ketika semua sudah maka lakukan restart dari `DHCP Relay` 
 ![Foto](./img/config/dhcprelay.jpg)
 
+<br>
+
 
 ## Soal 1
 ---
