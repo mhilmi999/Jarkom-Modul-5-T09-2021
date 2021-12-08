@@ -128,3 +128,57 @@ Selanjutnya kami melakukan pembagian subnetting seperti berikut:
 
 Lalu pada hal ini kami diminta untuk melakukan Routing agar setiap perangkat pada jaringan tersebut terhubung.
 
+1. Routing pada `Router Foosha` sebagai berikut
+    - terhadap Water7
+    ![Foto](./img/config/routingfooshawater7.jpg)
+    - terhadap Blueno
+    ![Foto](./img/config/routingfooshablueno.jpg)
+    - terhadap Cipher
+    ![Foto](./img/config/routingfooshacipher.jpg)
+    - terhadap Doriki dan Jipangu
+    ![Foto](./img/config/routingfooshadorikijipangu.jpg)
+    - terhadap Guanhao
+    ![Foto](./img/config/routingfooshaguanhao.jpg)
+    - terhadap Elena
+    ![Foto](./img/config/routingfooshaelena.jpg)
+    - terhadap Fukurou
+    ![Foto](./img/config/routingfooshafukurou.jpg)
+    - terhadap Jorge dan MainGate
+    ![Foto](./img/config/routingfooshajorgemaingate.jpg)
+
+2. Routing pada `Router Water7` sebagai berikut
+    ![Foto](./img/config/routingwater7.jpg)
+
+3. Routing pada `Router Guanhao` sebagai berikut
+    ![Foto](./img/config/routingguanhao.jpg)
+
+## Konfigurasi D
+---
+
+Kemudian kami di tugaskan memberikan IP kepada `Blueno`, `Cipher`, `Elena`, dan `Fukurou` secara dinamis menggunakan `DHCP`. Dimana kami menyelesaikan hal ini dengan meletakan `DHCP Server` pada **Jipangu** dan `DHCP Relay` pada `Router` **Foosha**, **Guanhao**, dan **Water7**.
+
+1. Pertama kami melakukan konfigurasi `network interface` pada node-node tersebut **(Blueno, Cipher, Elena, dan Fukurou)** sesuai dengan pada point [Konfigurasi B](#konfigurasi-b)
+
+2. Selanjutnya melakukan konfigurasi pada `DHCP Server` tepatnya di **Jipangu** sebagai berikut
+    - Persiapan `DHCP Server` dengan mengunduh package yang dibutuh kan dan mendefinisikan `resolv.conf` menuju ke IP Private laptop kami agar terkoneksi ke Internet dan menspesifikasikan `interfaces` pengiriman dari IP yang akan di assigned melalui bantuan `DHCP Relay` nantinya. Adapun dokumentasinya sebagai berikut:
+    ![Foto](./img/config/configdhcpserver.jpg)
+
+3. Lalu pembagian IP DHCP untuk `Client` **(Blueno, Cipher, Elena, dan Fukurou)** di **Jipangu** sebagai berikut
+    - Deklarasi `subnet A1` yang mana hanya perlu dideklarasikan tetapi tidak harus memiliki settingan DHCP. 
+    ![Foto](./img/config/subneta1.jpg)
+    - Selanjutnya pada `subnet A2` diberikan pengaturan sesuai dengan NID, netmask, range, broadcast address, dan dns server. Dimana range ini kami mengacu kepada penggunaan host dari Blueno yaitu `100` host. Kemudian untuk NID dan broadcast address menyesuaikan pada [tabel selengkapnya konfigurasi B](#konfigurasi-b)
+    ![Foto](./img/config/subneta2.jpg)
+    - Selanjutnya pada `subnet A3` diberikan pengaturan sesuai dengan NID, netmask, range, broadcast address, dan dns server. Dimana range ini kami mengacu kepada penggunaan host dari Blueno yaitu `700` host. Kemudian untuk NID dan broadcast address menyesuaikan pada [tabel selengkapnya konfigurasi B](#konfigurasi-b)
+    ![Foto](./img/config/subneta3.jpg)
+    - Selanjutnya pada `subnet A6` diberikan pengaturan sesuai dengan NID, netmask, range, broadcast address, dan dns server. Dimana range ini kami mengacu kepada penggunaan host dari Blueno yaitu `300` host. Kemudian untuk NID dan broadcast address menyesuaikan pada [tabel selengkapnya konfigurasi B](#konfigurasi-b)
+    ![Foto](./img/config/subneta6.jpg)
+    - Selanjutnya pada `subnet A7` diberikan pengaturan sesuai dengan NID, netmask, range, broadcast address, dan dns server. Dimana range ini kami mengacu kepada penggunaan host dari Blueno yaitu `200` host. Kemudian untuk NID dan broadcast address menyesuaikan pada [tabel selengkapnya konfigurasi B](#konfigurasi-b)
+    ![Foto](./img/config/subneta7.jpg)
+
+4. Agar `Client` **(Blueno, Cipher, Elena, dan Fukurou)** dengan `IP DHCP` dapat terhubung `koneksi ke internet`, maka dari itu diperlukan konfigurasi pada `DNS Server` yaitu **Forwarders Internet** sebagai berikut:\
+Pertama kami mengunduh terlebih dahulu `bind9` agar dapat melakukan hal tersebut dan lakukan konfigurasinya pada file `named.conf.options`
+![Foto](./img/config/forwardersinternet.jpg)
+
+5. Selanjutnya untuk distribusi IP DHCP kepada `Client` **(Blueno, Cipher, Elena, dan Fukurou)** tersampaikan dari **Jipangu** atau `DHCP Server`, maka kita memerlukan pengaturan konfigurasi `DHCP Relay` pada `Router` **Water7** dan **Guanhao** seperti berikut:\
+Pertama-tama kami mendefinisikan `resolv.conf` mengarah ke IP Private laptop agar tersambung ke internet, selanjutnya kami melakukan instalasi package `DHCP Relay` berupa `isc-dhcp-relay`, setelah sudah maka kami juga lakukan ip forwarding pada file `sysctl.conf` dan aktifkan nya, dan selanjutnya pada file `isc-dhcp-relay` kami mendefiniskan `DHCP Server` nya ada pada **Jipangu*** serta interfaces yang akan dilewatinya yaitu `eth0 eth1 eth2 eth3`. Ketika semua sudah maka lakukan restart dari `DHCP Relay` 
+![Foto](./img/config/dhcprelay.jpg)
