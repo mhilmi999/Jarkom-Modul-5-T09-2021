@@ -187,7 +187,7 @@ Pertama-tama kami mendefinisikan `resolv.conf` mengarah ke IP Private laptop aga
 ## Soal 1
 ---
 
-Mengkonfigurasi `Router` **Foosha** dengan `iptables` dengan catatan tidak diperbolehkan **MASQUERADE**.
+Mengkonfigurasi `Router` **Foosha** dengan `iptables` dengan catatan tidak diperbolehkan **MASQUERADE**. Agar dapat mengakses keluar (internet)
 
 Dalam hal ini kami menyelesaikannya dengan menggunakan `ip static` pada `eth0` di `Foosha` 
 ```
@@ -209,6 +209,12 @@ Berikut dokumentasi pengerjaan nomer 1:
 ![Foto](./img/no1/soal1.jpg)
 ![Foto](./img/no1/soal1(2).jpg)
 
+Berikut dokumentasi testing nomer 1:
+<br> Uji coba dilakukan di `Foosha` dan `Cipher` dengan melakukan ```ping google.com```
+
+![Foto](./img/no1/tesno1.jpg)
+![Foto](./img/no1/tesno1(2).jpg)
+
 <br>
 
 ## Soal 2
@@ -221,3 +227,18 @@ Dalam hal ini kami menyelesaikannya dengan command `iptables` sebagai berikut:
 iptables -A FORWARD -d 10.46.4.0/29 -i eth0 -p tcp -m tcp --dport 80 -j DROP
 ```
 dengan keterangan pada IP pertama `-d` merupakan IP NID untuk `subnet A1` dikarenakan terdapat `DHCP Server (Jipangu)` dan `DNS Server (Doriki)`
+
+Berikut dokumentasi pengerjaan nomer 2:
+![Foto](./img/no2/soal2.jpg)
+
+Berikut dokumentasi testing nomer 2:
+<br> Uji coba dilakukan di `Elena` dengan melakukan 
+```
+nmap -p 80 10.46.4.2
+nmap -p 80 10.46.4.3
+```
+hal ini dimaksudkan mengecek apakah port 80 tersedia pada `Doriki` dan `Jipangu`
+
+![Foto](./img/no2/tesno2.jpeg)
+
+<br>
