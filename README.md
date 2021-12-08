@@ -7,7 +7,6 @@ Muhammad Hilmi Ramadhan | 05311940000044
 Sri Puspita Dewi | 05111940000045
 
 ## List of Contents :
-- [Prakata](#Prakata)
 - [Konfigurasi A](#konfigurasi-a)
 - [Konfigurasi B](#konfigurasi-b)
 - [Konfigurasi C](#konfigurasi-c)
@@ -26,8 +25,6 @@ Sri Puspita Dewi | 05111940000045
 
 Detil soal dapat dilihat pada [tautan ini](https://docs.google.com/document/d/1Sc2jTlqmyM149yi4QzOGijyjPmSeEoy14Ajg9MnmkuY/edit)
 
-## Prakata
----
 
 ## Konfigurasi A
 ---
