@@ -182,3 +182,42 @@ Pertama kami mengunduh terlebih dahulu `bind9` agar dapat melakukan hal tersebut
 5. Selanjutnya untuk distribusi IP DHCP kepada `Client` **(Blueno, Cipher, Elena, dan Fukurou)** tersampaikan dari **Jipangu** atau `DHCP Server`, maka kita memerlukan pengaturan konfigurasi `DHCP Relay` pada `Router` **Water7** dan **Guanhao** seperti berikut:\
 Pertama-tama kami mendefinisikan `resolv.conf` mengarah ke IP Private laptop agar tersambung ke internet, selanjutnya kami melakukan instalasi package `DHCP Relay` berupa `isc-dhcp-relay`, setelah sudah maka kami juga lakukan ip forwarding pada file `sysctl.conf` dan aktifkan nya, dan selanjutnya pada file `isc-dhcp-relay` kami mendefiniskan `DHCP Server` nya ada pada **Jipangu*** serta interfaces yang akan dilewatinya yaitu `eth0 eth1 eth2 eth3`. Ketika semua sudah maka lakukan restart dari `DHCP Relay` 
 ![Foto](./img/config/dhcprelay.jpg)
+
+
+## Soal 1
+---
+
+Mengkonfigurasi `Router` **Foosha** dengan `iptables` dengan catatan tidak diperbolehkan **MASQUERADE**.
+
+Dalam hal ini kami menyelesaikannya dengan menggunakan `ip static` pada `eth0` di `Foosha` 
+```
+auto eth0
+iface eth0 inet static
+      address 192.168.122.2
+      netmask 255.255.255.0
+      gateway 192.168.122.1
+```
+yang mana `gateway` ip nya kami dapatkan dari `resolv.conf` ketika menggunakan pengaturan `DHCP`.
+
+Selanjutnya kami melakukan pengaturan `iptables` dengan `SNAT` dengan command sebagai berikut
+```
+iptables -t nat -A POSTROUTING -s 10.46.0.0/18 -o eth0 -j SNAT --to-source 192.168.122.2
+```
+dengan keterangan paramter IP pertama setelah -s yaitu `10.46.0.0/18` hal ini kami dapatkan dari `Tree CIDR` kami yang tertinggi yaitu mengenakan `Netmask 18` dan paramater IP `--to-source` kami gunakan `IP eth0 Foosha`.
+
+Berikut dokumentasi pengerjaan nomer 1:
+![Foto](./img/no1/soal1.jpg)
+![Foto](./img/no1/soal1(2).jpg)
+
+<br>
+
+## Soal 2
+---
+
+Melakukan `Drop akses HTTP` dari luar Topologi dengan target `DHCP Server` dan `DNS Server`.
+
+Dalam hal ini kami menyelesaikannya dengan command `iptables` sebagai berikut:
+```
+iptables -A FORWARD -d 10.46.4.0/29 -i eth0 -p tcp -m tcp --dport 80 -j DROP
+```
+dengan keterangan pada IP pertama `-d` merupakan IP NID untuk `subnet A1` dikarenakan terdapat `DHCP Server (Jipangu)` dan `DNS Server (Doriki)`
