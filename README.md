@@ -244,3 +244,57 @@ hal ini dimaksudkan mengecek apakah port 80 tersedia pada `Doriki` dan `Jipangu`
 ![Foto](./img/no2/tesno2.jpeg)
 
 <br>
+
+## Soal 3
+---
+Karena kelompok kalian maksimal terdiri dari 3 orang. Luffy meminta kalian untuk `membatasi DHCP` dan `DNS Server` hanya boleh menerima `maksimal 3 koneksi ICMP` secara bersamaan menggunakan iptables, selebihnya didrop.
+
+Dalam hal ini kami menyelesaikannya dengan command sebagai berikut:
+
+```
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+
+```
+
+Penjelasan :
+
+Pada soal ini kami menggunakan `-A INPUT` untuk menyaring paket protokol ICMP `-p icmp` yang akan masuk agar dibatasi  hanya sebatas maksimal 3 koneksi saja `-m connlimit --connlimit-above 3` darimana saja `--connlimit-mask 0` sehingga selebihnya akan `-j DROP` di DROP
+
+## Soal 4
+---
+
+Akses dari subnet `Blueno` dan `Cipher` hanya diperbolehkan pada `pukul 07.00 - 15.00 `pada hari `Senin sampai Kamis`.
+
+
+Dalam hal ini kami menyelesaikannya dengan membagi 3 waktu seperti pada command berikut:
+
+*Batas Hari Tidak Aktif*
+```
+iptables -A INPUT -s 10.46.8.0/25 -m time --weekdays Fri,Sat,Sun -j REJECT
+iptables -A INPUT -s 10.46.0.0/22 -m time --weekdays Fri,Sat,Sun -j REJECT
+```
+
+Kami menggunakan `-A INPUT` untuk menyaring paket yang masuk dari `-s 10.46.8.0/25` subnet `BLUENO` dan `-s 10.46.0.0/22` subnet `CHIPER` `-m time --weekdays Fri,Sat,Sun` di jam berapapun pada hari Jumat, Sabtu dan Minggu agar `-j REJECT` ditolak.
+
+*Batas Jam*
+`BLUENO` 
+```
+iptables -A INPUT -s 10.46.8.0/25 -m time --timestart 00:00 --timestop 06:59 --weekdays Mon,Tue,Wed,Thu -j REJECT
+iptables -A INPUT -s 10.46.8.0/25 -m time --timestart 15:01 --timestop 23:59 --weekdays Mon,Tue,Wed,Thu -j REJECT
+
+```
+Disini kami menggunakan `-A INPUT` untuk menyaring paket yang masuk dari `-s 10.46.8.0/25` subnet `BLUENO` `-m time --timestart 00:00 --timestop 06:59` di waktu jam 00:00 sampai dengan jam 06:59 `--weekdays Mon,Tue,Wed,Thu` pada hari Senin, Selasa, Rabu, Kamis, Jum'at agar `-j REJECT` ditolak.
+
+Selanjutnya untuk aturan jam kedua sama saja, hanya yang membedakan adalah `-m time --timestart 15:01 --timestop 23:59` di waktu jam 15:01 sampai dengan jam 23:59.
+
+*Batas Jam*
+`CHIPER` 
+```
+iptables -A INPUT -s 10.46.0.0/22 -m time --timestart 00:00 --timestop 06:59 --weekdays Mon,Tue,Wed,Thu -j REJECT
+iptables -A INPUT -s 10.46.0.0/22 -m time --timestart 15:01 --timestop 23:59 --weekdays Mon,Tue,Wed,Thu -j REJECT
+
+```
+
+Sedangkan untuk `CHIPER` sama persis seperti penjelasan `BLUENO`. Disini kami menggunakan `-A INPUT` untuk menyaring paket yang masuk dari `-s 10.46.8.0/25` subnet `BLUENO` `-m time --timestart 00:00 --timestop 06:59` di waktu jam 00:00 sampai dengan jam 06:59 `--weekdays Mon,Tue,Wed,Thu` pada hari Senin, Selasa, Rabu, Kamis, Jum'at agar `-j REJECT` ditolak.
+
+Selanjutnya untuk aturan jam kedua sama saja, hanya yang membedakan adalah `-m time --timestart 15:01 --timestop 23:59` di waktu jam 15:01 sampai dengan jam 23:59.
