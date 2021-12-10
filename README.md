@@ -255,6 +255,9 @@ Dalam hal ini kami menyelesaikannya dengan command sebagai berikut:
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 
 ```
+Berikut Dokumentasi pengerjaan dan tes soal :
+
+![Foto](./img/no3/1.jpg)
 
 Penjelasan :
 
@@ -298,3 +301,9 @@ iptables -A INPUT -s 10.46.0.0/22 -m time --timestart 15:01 --timestop 23:59 --w
 Sedangkan untuk `CHIPER` sama persis seperti penjelasan `BLUENO`. Disini kami menggunakan `-A INPUT` untuk menyaring paket yang masuk dari `-s 10.46.8.0/25` subnet `BLUENO` `-m time --timestart 00:00 --timestop 06:59` di waktu jam 00:00 sampai dengan jam 06:59 `--weekdays Mon,Tue,Wed,Thu` pada hari Senin, Selasa, Rabu, Kamis, Jum'at agar `-j REJECT` ditolak.
 
 Selanjutnya untuk aturan jam kedua sama saja, hanya yang membedakan adalah `-m time --timestart 15:01 --timestop 23:59` di waktu jam 15:01 sampai dengan jam 23:59.
+
+Berikut Dokumentasi pengerjaan dan tes soal :
+
+![Foto](./img/no4/3.jpg)
+![Foto](./img/no4/1.jpeg)
+![Foto](./img/no4/2.jpeg)
