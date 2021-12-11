@@ -307,3 +307,17 @@ Berikut Dokumentasi pengerjaan dan tes soal :
 ![Foto](./img/no4/3.jpg)
 ![Foto](./img/no4/1.jpeg)
 ![Foto](./img/no4/2.jpeg)
+
+## Soal 5
+---
+
+Membatasi akses ke Doriki yang berasal dari subnet Elena dan Fukuro hanya diperbolehkan pada pukul 15.01 hingga pukul 06.59 setiap harinya.
+
+untuk di no.5 ini kita tidak perlu membuat batasan harinya karena bisa diakses setiap hari, hanya membuat batasa jamnya.
+
+*Batas Jam*
+melakukan seting di Doriki untuk ` Elena dan Fukuro ` 
+```
+iptables -A INPUT -s 10.46.34.0/23 -m time --timestart 06:59 --timestop 15:01 -j REJECT
+```
+
