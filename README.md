@@ -320,4 +320,50 @@ melakukan seting di Doriki untuk ` Elena dan Fukuro `
 ```
 iptables -A INPUT -s 10.46.34.0/23 -m time --timestart 06:59 --timestop 15:01 -j REJECT
 ```
+Berikut Dokumentasi pengerjaan :
 
+![Foto](./img/no5/5.1.doriki.jpeg)
+
+lalu melakukan test di elena atau fukurou jangan lupa atur tanggal(date) terlebih dahulu 
+
+```
+akses yang tidak bisa : date --set="2021-12-04 14:00:00.00"
+akses yang bisa : date --set="2021-12-04 16:00:00.00"
+```
+kami menggunak elena sebagi tempat testnya dengan melakukan ping memanggil server Doriki
+
+![Foto](./img/no5/5.2.elena.jpeg)
+
+## Soal 6
+---
+Karena kita memiliki 2 Web Server, Luffy ingin Guanhao disetting sehingga setiap request dari client yang mengakses DNS Server akan didistribusikan secara bergantian pada Jorge dan Maingate
+
+kita melakukan setting di GUANHAO
+
+```
+iptables -A PREROUTING -t nat -d 10.46.4.2 -p tcp --dport 80 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.46.33.3:80
+iptables -A PREROUTING -t nat -d 10.46.4.2 -p tcp --dport 80 -j DNAT --to-destination 10.46.33.2:80
+
+iptables -t nat -A POSTROUTING -p tcp -d 10.46.33.3 --dport 80 -j SNAT --to-source 10.46.4.2:80
+iptables -t nat -A POSTROUTING -p tcp -d 10.46.33.2 --dport 80 -j SNAT --to-source 10.46.4.2:80
+```
+IP Doriki   : 10.46.4.2
+IP Jorge    : 10.46.33.2
+IP MainGate : 10.46.33.3
+
+
+![Foto](./img/no6/6.1.guanhao.jpeg)
+
+lalu di jorge & maingate melakukan install netcat
+
+![Foto](./img/no6/6.2.jorge%26maingate.jpeg)
+
+Melakukan test di Fukurou dengan `nc 10.46.4.2` dengan memasuki ipnya Doriki
+
+![Foto](./img/no6/6.3.fukuro.jpeg)
+
+Lalu di Jorge & Maingate kita mengetik `nc -l -p -80`
+
+![Foto](./img/no6/6.4.jorge.jpeg)
+
+![Foto](./img/no6/6.5.maingate.jpeg)
