@@ -348,7 +348,9 @@ iptables -t nat -A POSTROUTING -p tcp -d 10.46.33.3 --dport 80 -j SNAT --to-sour
 iptables -t nat -A POSTROUTING -p tcp -d 10.46.33.2 --dport 80 -j SNAT --to-source 10.46.4.2:80
 ```
 IP Doriki   : 10.46.4.2
+
 IP Jorge    : 10.46.33.2
+
 IP MainGate : 10.46.33.3
 
 
